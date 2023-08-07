@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-import { NewContactData, NewContactSchema } from "../../schemas/newContact";
-import { useClient } from "../../hooks";
-// import { NewContactModalStyle } from "./styles";
+import { useClient, useModal } from "../../../hooks";
+import { IContact } from "../../../providers/UserProviders";
+import { NewContactData, NewContactSchema } from "../../../schemas/newContact";
+import { NewContactModalStyle } from "./styles";
 
 const NewContactModal = () => {
   const {
@@ -13,14 +13,32 @@ const NewContactModal = () => {
   } = useForm<NewContactData>({
     resolver: zodResolver(NewContactSchema),
   });
-    const { addContact } = useClient();
+  const { addContact } = useClient();
+  const { closeModal } = useModal();
+
+  const id = localStorage.getItem("@userId");
+  const userId = id as string;
 
   const onSubmit = (data: NewContactData) => {
-    addContact(data);
+    const contactData: IContact = {
+      id: userId,
+      registDate: new Date().toDateString(),
+      ...data,
+    };
+    addContact(contactData);
+    closeModal();
   };
 
   return (
-    <div>
+    <NewContactModalStyle>
+      <span
+        className="closeModal"
+        onClick={() => {
+          closeModal();
+        }}
+      >
+        X
+      </span>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="first_name">Nome</label>
@@ -42,11 +60,11 @@ const NewContactModal = () => {
           <input type="text" id="phone" {...register("phone")} />
           {errors.phone && <p>{errors.phone.message}</p>}
         </div>
-        <button type="submit" className="btnForm">
+        <button type="submit" className="addContact">
           Adicionar Contato
         </button>
       </form>
-    </div>
+    </NewContactModalStyle>
   );
 };
 

@@ -1,32 +1,41 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { useClient, useModal } from "../../../hooks";
 import {
   UpdateContactData,
   UpdateContactSchema,
-} from "../../schemas/updateContact";
-// import { EditContactModalStyle } from "./styles";
+} from "../../../schemas/updateContact";
+import { EditContactModalStyle } from "./styles";
 
-interface EditContactModalProps {
-  contactId: number;
-}
-
-const EditContactModal = ({ contactId }: EditContactModalProps) => {
+const EditContactModal = () => {
+  const { closeModal } = useModal();
+  const { editCont } = useClient();
+  const userId = JSON.parse(localStorage.getItem("@infoCont")!);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateContactData>({
     resolver: zodResolver(UpdateContactSchema),
+    defaultValues: userId,
   });
-//   const { updateContact } = useContacts();
 
   const onSubmit = (data: UpdateContactData) => {
-    // updateContact(contactId, data);
+    editCont(data);
+    closeModal();
   };
 
   return (
-    <div>
+    <EditContactModalStyle>
+      <span
+        className="closeModal"
+        onClick={() => {
+          closeModal();
+        }}
+      >
+        X
+      </span>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="first_name">Nome</label>
@@ -48,11 +57,11 @@ const EditContactModal = ({ contactId }: EditContactModalProps) => {
           <input type="text" id="phone" {...register("phone")} />
           {errors.phone && <p>{errors.phone.message}</p>}
         </div>
-        <button type="submit" className="btnForm">
+        <button type="submit" className="addContact">
           Salvar Alterações
         </button>
       </form>
-    </div>
+    </EditContactModalStyle>
   );
 };
 

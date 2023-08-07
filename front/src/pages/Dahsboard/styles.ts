@@ -7,6 +7,10 @@ export const DashBStyle = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    height: fit-content;
+  }
 
   h1 {
     color: var(--text1);
@@ -25,6 +29,7 @@ export const DashBStyle = styled.main`
     border-radius: 0px 0px 0px 16px;
     align-items: center;
     padding: 0.7rem 2rem;
+    cursor: pointer;
     .addUser {
       width: 30px;
       height: 30px;
@@ -47,6 +52,14 @@ export const DashBStyle = styled.main`
     display: flex;
     flex-direction: row;
     margin-bottom: auto;
+    @media (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: fit-content;
+      align-items: center;
+      gap: 2rem;
+    }
   }
   .userDetails {
     display: flex;
@@ -58,6 +71,9 @@ export const DashBStyle = styled.main`
     margin-top: auto;
     margin-bottom: auto;
     border-radius: 1rem;
+    @media (max-width: 600px) {
+      width: 80vw;
+    }
 
     .imgUser {
       width: 70px;
@@ -126,6 +142,11 @@ export const DashBStyle = styled.main`
     margin-top: auto;
     margin-bottom: auto;
     gap: 1rem;
+    @media (max-width: 600px) {
+      width: 90vw;
+      align-items: center;
+      flex-direction: column;
+    }
     li {
       width: 290px;
       height: 150px;

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const RegisterSchema = z.object({
   first_name: z.string().min(3).max(12).nonempty("Insira um nome válido"),
-  last_name: z.string().min(5).max(15).nonempty("Forneça seu sobrenome"),
+  last_name: z.string().min(4).max(15).nonempty("Forneça seu sobrenome"),
   email: z.string().email("Insira um e-mail válido"),
   phone: z
     .string()

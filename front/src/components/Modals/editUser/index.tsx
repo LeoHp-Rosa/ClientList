@@ -1,22 +1,49 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { useAuth } from "../../hooks";
-import { RegisterData, RegisterSchema } from "../../schemas/register";
-// import { RegisterUserModalStyle } from "./styles";
 
-const RegisterUserModal = () => {
+import { useClient, useModal } from "../../../hooks";
+import { EditUserData, EditUserSchema } from "../../../schemas/updateUser";
+import { EditUserModalStyle } from "./styles";
+
+export const EditUserModal = () => {
+  const { closeModal } = useModal();
+  const { editUser } = useClient();
+
+  const userInf = JSON.parse(localStorage.getItem("@userInf")!);
+  const user = userInf;
+  console.log(user)
+  const dataOldUser = {
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    phone: user?.phone,
+    email: user?.email,
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterData>({
-    resolver: zodResolver(RegisterSchema),
+  } = useForm<EditUserData>({
+    resolver: zodResolver(EditUserSchema),
+    defaultValues: dataOldUser,
   });
-//   const { registerUser } = useAuth();
+
+  const onSubmit = (data: EditUserData) => {
+    editUser(data);
+    closeModal();
+  };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(registerUser)}>
+    <EditUserModalStyle>
+      <span
+        className="closeModal"
+        onClick={() => {
+          closeModal();
+        }}
+      >
+        X
+      </span>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="first_name">Nome</label>
           <input type="text" id="first_name" {...register("first_name")} />
@@ -40,14 +67,12 @@ const RegisterUserModal = () => {
         <div>
           <label htmlFor="password">Senha</label>
           <input type="password" id="password" {...register("password")} />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.phone && <p>{errors.phone.message}</p>}
         </div>
-        <button type="submit" className="btnForm">
-          Registrar
+        <button type="submit" className="addContact">
+          Salvar Alterações
         </button>
       </form>
-    </div>
+    </EditUserModalStyle>
   );
 };
-
-export default RegisterUserModal;

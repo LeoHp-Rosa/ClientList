@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../hooks";
+import RegisterUserModal from "../../components/Modals/regUser/regUserModal";
+import { useClient, useModal } from "../../hooks";
 import { LoginData, LoginSchema } from "../../schemas/login";
 import { LoginPageStyle } from "./styles";
 
@@ -12,7 +13,12 @@ const Login = () => {
   } = useForm<LoginData>({
     resolver: zodResolver(LoginSchema),
   });
-  const { singIn } = useAuth();
+  const { singIn } = useClient();
+  const { openModal } = useModal();
+
+  const ModalRegUser = () => {
+    openModal(<RegisterUserModal />);
+  };
 
   return (
     <LoginPageStyle>
@@ -32,6 +38,16 @@ const Login = () => {
           Login
         </button>
       </form>
+      <div className="noUser">
+        <h1>Não possui cadastro?</h1>
+        <span
+          onClick={() => {
+            ModalRegUser();
+          }}
+        >
+          Faça cadastro clicando aqui
+        </span>
+      </div>
     </LoginPageStyle>
   );
 };
