@@ -41,5 +41,8 @@ npm install
 8. Após a conclusão da instalação das dependências, execute o seguinte comando para iniciar o servidor de desenvolvimento do front-end:
 npm run dev
 
+###Para acessar a documentação da aplicação.
+
+Após instalar todas as depedencias da pasta api, abre o navegador e acesse: http:localhost:3000/api
 
 
